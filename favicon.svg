@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#0d3b2e"/>
+  <rect x="12" y="10" width="28" height="40" rx="4" fill="#fdfbf5" transform="rotate(-10 26 30)"/>
+  <rect x="24" y="14" width="28" height="40" rx="4" fill="#fdfbf5" stroke="#d9b45b" stroke-width="1.5" transform="rotate(8 38 34)"/>
+  <text x="38" y="40" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#c0392b" text-anchor="middle" transform="rotate(8 38 34)">100</text>
+  <text x="38" y="52" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#1d1d1d" text-anchor="middle" transform="rotate(8 38 34)">&#9824;</text>
+</svg>

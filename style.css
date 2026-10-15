@@ -1,0 +1,432 @@
+:root {
+  --l-carte: 84px;
+  --h-carte: 122px;
+  --feutre: #0d3b2e;
+  --feutre-clair: #175843;
+  --or: #d9b45b;
+  --creme: #f3ecdc;
+  --rouge: #c0392b;
+  --noir: #1d1d1d;
+  --ombre: 0 6px 16px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--creme);
+  background:
+    radial-gradient(ellipse at 50% 42%, var(--feutre-clair) 0%, var(--feutre) 62%, #07231b 100%);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ------------------------------------------------------------ En-tête */
+
+.barre {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(0, 0, 0, 0.28);
+  border-bottom: 1px solid rgba(217, 180, 91, 0.25);
+  flex-wrap: wrap;
+}
+
+.barre h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  color: var(--or);
+}
+
+.scores {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.score { display: flex; flex-direction: column; line-height: 1.1; }
+.score-nom { font-size: 0.7rem; opacity: 0.75; }
+.score-valeur { font-size: 1.25rem; font-weight: 600; }
+.score[data-equipe="0"] .score-valeur { color: var(--or); }
+.score-sep { opacity: 0.4; }
+
+.infos {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-left: auto;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  flex-wrap: wrap;
+}
+
+.atout-pastille {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--creme);
+  font-weight: 700;
+}
+.atout-pastille.rouge { color: var(--rouge); }
+.atout-pastille.noir { color: var(--noir); }
+
+.lien {
+  background: none;
+  border: 1px solid rgba(217, 180, 91, 0.5);
+  color: var(--or);
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+}
+.lien:hover { background: rgba(217, 180, 91, 0.15); }
+
+/* -------------------------------------------------------------- Tapis */
+
+.tapis {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) minmax(280px, 2.2fr) minmax(70px, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    ".      nord   ."
+    "ouest  centre est"
+    ".      sud    .";
+  align-items: center;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 0.8rem 1rem 1.2rem;
+  align-content: center;
+}
+
+.place-nord { grid-area: nord; }
+.place-ouest { grid-area: ouest; }
+.place-est { grid-area: est; }
+.place-sud { grid-area: sud; }
+.centre { grid-area: centre; }
+
+.place {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+.place-ouest, .place-est { flex-direction: column; }
+
+.etiquette {
+  font-size: 0.8rem;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+}
+.etiquette.donneur::after { content: " · D"; opacity: 0.6; }
+.etiquette.preneur { border-color: var(--or); color: var(--or); }
+.etiquette.actif {
+  background: var(--or);
+  color: #1a2b22;
+  border-color: var(--or);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------- Cartes */
+
+.carte {
+  position: relative;
+  width: var(--l-carte);
+  height: var(--h-carte);
+  border-radius: 7px;
+  background: #fdfbf5;
+  box-shadow: var(--ombre);
+  color: var(--noir);
+  flex: 0 0 auto;
+  user-select: none;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.carte.rouge { color: var(--rouge); }
+
+.carte .face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 6px;
+}
+
+.carte.dos {
+  background:
+    repeating-linear-gradient(45deg, #8c2c2c 0 6px, #6f2020 6px 12px);
+  border: 3px solid #fdfbf5;
+}
+
+
+/* Mains adverses : piles de dos, réduites. */
+.main-adverse { display: flex; }
+.place-nord .main-adverse { flex-direction: row; }
+.place-nord .carte { margin-left: calc(var(--l-carte) * -0.42); }
+.place-nord .carte:first-child { margin-left: 0; }
+.place-ouest .main-adverse,
+.place-est .main-adverse { flex-direction: column; }
+.place-ouest .carte, .place-est .carte { margin-top: calc(var(--h-carte) * -0.55); }
+.place-ouest .carte:first-child, .place-est .carte:first-child { margin-top: 0; }
+.main-adverse .carte {
+  width: calc(var(--l-carte) * 0.72);
+  height: calc(var(--h-carte) * 0.72);
+}
+
+/* Main du joueur */
+.main-joueur {
+  display: flex;
+  padding-top: 18px;
+}
+.main-joueur .carte { margin-left: calc(var(--l-carte) * -0.3); }
+.main-joueur .carte:first-child { margin-left: 0; }
+.main-joueur .carte.est-atout { box-shadow: 0 0 0 2px var(--or), var(--ombre); }
+.main-joueur .carte.jouable { cursor: pointer; }
+.main-joueur .carte.jouable:hover,
+.main-joueur .carte.jouable:focus-visible {
+  transform: translateY(-20px);
+  outline: none;
+  z-index: 2;
+}
+.main-joueur .carte.interdite { opacity: 0.45; }
+
+/* Centre : pli en cours et retournée */
+.centre {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: calc(var(--h-carte) * 2.6);
+}
+
+.pli {
+  position: relative;
+  width: calc(var(--l-carte) * 2.6);
+  height: calc(var(--h-carte) * 2.4);
+}
+.carte.posee {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: pose 0.18s ease-out;
+}
+.posee-sud { transform: translate(-50%, calc(var(--h-carte) * 0.14)) rotate(2deg); }
+.posee-nord { transform: translate(-50%, calc(-100% - var(--h-carte) * 0.14)) rotate(-3deg); }
+.posee-ouest { transform: translate(calc(-100% - var(--l-carte) * 0.22), -50%) rotate(-5deg); }
+.posee-est { transform: translate(calc(var(--l-carte) * 0.22), -50%) rotate(5deg); }
+
+@keyframes pose {
+  from { opacity: 0; scale: 0.9; }
+  to { opacity: 1; scale: 1; }
+}
+
+/* Ramassage : la carte maîtresse s'allume, puis le pli file vers le gagnant. */
+.carte.posee.maitresse {
+  z-index: 3;
+  box-shadow: 0 0 0 2px var(--or), 0 0 22px rgba(217, 180, 91, 0.7), var(--ombre);
+}
+
+.pli {
+  transition: transform 0.6s cubic-bezier(0.32, 0, 0.2, 1), opacity 0.6s ease-in;
+}
+.pli.part { opacity: 0; }
+.pli.part-sud { transform: translateY(calc(var(--h-carte) * 1.7)) scale(0.45); }
+.pli.part-nord { transform: translateY(calc(var(--h-carte) * -1.7)) scale(0.45); }
+.pli.part-ouest { transform: translateX(calc(var(--l-carte) * -3.2)) scale(0.45); }
+.pli.part-est { transform: translateX(calc(var(--l-carte) * 3.2)) scale(0.45); }
+
+.etiquette.gagne {
+  background: var(--or);
+  color: #1a2b22;
+  border-color: var(--or);
+  font-weight: 600;
+  animation: pli-gagne 0.5s ease-out;
+}
+@keyframes pli-gagne {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pli { transition: opacity 0.4s ease-in; }
+  .pli.part-sud, .pli.part-nord, .pli.part-ouest, .pli.part-est { transform: none; }
+  .etiquette.gagne { animation: none; }
+}
+
+.parole {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(217, 180, 91, 0.5);
+  border-radius: 12px;
+  background: rgba(8, 32, 25, 0.7);
+  white-space: nowrap;
+}
+.parole[hidden] { display: none; }
+.parole-vide { opacity: 0.6; font-size: 0.85rem; }
+.parole-joueur { font-size: 0.8rem; opacity: 0.75; }
+.parole-contrat {
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 0.05rem 0.4rem;
+  border-radius: 6px;
+  background: var(--creme);
+}
+.parole-contrat.rouge { color: var(--rouge); }
+.parole-contrat.noir { color: var(--noir); }
+.parole-coinche { font-size: 0.8rem; color: var(--or); }
+
+/* ------------------------------------------------------------ Panneaux */
+
+.panneau {
+  position: fixed;
+  left: 50%;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  background: rgba(8, 32, 25, 0.96);
+  border: 1px solid var(--or);
+  border-radius: 14px;
+  padding: 1rem 1.4rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  z-index: 10;
+  max-width: min(92vw, 520px);
+}
+.panneau-encheres { bottom: calc(var(--h-carte) + 4.5rem); }
+
+/* Enchères : une grille de paliers, puis le choix de la couleur. */
+.paliers {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+  margin-bottom: 0.6rem;
+}
+.bouton.palier {
+  padding: 0.4rem 0.2rem;
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.bouton.palier.actif {
+  background: var(--or);
+  border-color: var(--or);
+  color: #1a2b22;
+  font-weight: 700;
+}
+.couleurs {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 0.6rem;
+}
+.couleurs[hidden] { display: none; }
+.couleurs .bouton.couleur {
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0.3rem 0.7rem;
+}
+.panneau-large { bottom: 50%; transform: translate(-50%, 50%); }
+.panneau-titre { margin: 0 0 0.8rem; font-size: 1.05rem; font-weight: 600; }
+.panneau-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+
+.bouton {
+  font: inherit;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 236, 220, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--creme);
+  cursor: pointer;
+}
+.bouton:hover { background: rgba(255, 255, 255, 0.16); }
+.bouton.principal {
+  background: var(--or);
+  border-color: var(--or);
+  color: #1a2b22;
+  font-weight: 600;
+}
+.bouton.principal:hover { background: #e7c976; }
+.bouton.couleur { background: var(--creme); font-weight: 700; }
+.bouton.couleur.rouge { color: var(--rouge); }
+.bouton.couleur.noir { color: var(--noir); }
+
+.feuille {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+.feuille th, .feuille td {
+  padding: 0.3rem 0.6rem;
+  border-bottom: 1px solid rgba(243, 236, 220, 0.15);
+  text-align: right;
+}
+.feuille th:first-child, .feuille td:first-child { text-align: left; opacity: 0.8; }
+.feuille .ligne-forte td { font-weight: 700; color: var(--or); }
+
+/* ------------------------------------------------------------- Journal */
+
+.journal {
+  position: fixed;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  width: min(250px, 42vw);
+  max-height: 9.5rem;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  opacity: 0.75;
+  pointer-events: none;
+  text-align: right;
+}
+.journal p { margin: 0; }
+
+dialog {
+  border: 1px solid var(--or);
+  border-radius: 14px;
+  background: #0b2c22;
+  color: var(--creme);
+  max-width: min(92vw, 540px);
+  padding: 1.4rem;
+}
+dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+dialog h2 { margin-top: 0; color: var(--or); font-family: Georgia, serif; }
+dialog ul { padding-left: 1.1rem; line-height: 1.55; font-size: 0.9rem; }
+dialog li { margin-bottom: 0.4rem; }
+
+/* ---------------------------------------------------------- Responsive */
+
+@media (max-width: 860px) {
+  :root { --l-carte: 62px; --h-carte: 90px; }
+  .journal { display: none; }
+}
+
+@media (max-width: 560px) {
+  :root { --l-carte: 56px; --h-carte: 81px; }
+  /* La main occupe toute la largeur : les piles adverses passent derrière. */
+  .place-sud { grid-column: 1 / -1; }
+  .main-joueur .carte { margin-left: calc(var(--l-carte) * -0.4); }
+  .barre { gap: 0.6rem; padding: 0.5rem 0.7rem; }
+  .barre h1 { font-size: 1.15rem; }
+  .tapis { padding: 0.5rem 0.4rem 0.8rem; grid-template-columns: 46px 1fr 46px; }
+
+}

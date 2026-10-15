@@ -1,0 +1,10 @@
+{
+  "name": "coinche",
+  "version": "1.0.0",
+  "description": "Jeu de belote coinchée jouable dans le navigateur",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node test/selfplay.mjs"
+  }
+}

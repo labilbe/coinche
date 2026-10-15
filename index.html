@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coinche</title>
+<meta name="description" content="Jeu de belote coinchée à quatre, jouable directement dans le navigateur.">
+<meta name="theme-color" content="#0d3b2e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="barre">
+  <h1>Coinche</h1>
+  <div class="scores">
+    <div class="score" data-equipe="0">
+      <span class="score-nom" id="nom-equipe-0">Vous &amp; Nord</span>
+      <span class="score-valeur" id="score-0">0</span>
+    </div>
+    <div class="score-sep">/</div>
+    <div class="score" data-equipe="1">
+      <span class="score-nom" id="nom-equipe-1">Ouest &amp; Est</span>
+      <span class="score-valeur" id="score-1">0</span>
+    </div>
+  </div>
+  <div class="infos">
+    <span id="info-donne">Donne 1</span>
+    <span id="info-atout" class="atout-pastille" hidden></span>
+    <span id="info-contrat"></span>
+  </div>
+  <button type="button" id="btn-regles" class="lien">Règles</button>
+</header>
+
+<main class="tapis" id="tapis">
+  <div class="place place-nord">
+    <div class="etiquette" id="etiq-2">Nord</div>
+    <div class="main-adverse" id="main-2"></div>
+  </div>
+  <div class="place place-ouest">
+    <div class="etiquette" id="etiq-1">Ouest</div>
+    <div class="main-adverse" id="main-1"></div>
+  </div>
+  <div class="place place-est">
+    <div class="etiquette" id="etiq-3">Est</div>
+    <div class="main-adverse" id="main-3"></div>
+  </div>
+
+  <div class="centre">
+    <div class="pli" id="pli"></div>
+    <div class="parole" id="parole" hidden></div>
+  </div>
+
+  <div class="place place-sud">
+    <div class="main-joueur" id="main-0"></div>
+    <div class="etiquette" id="etiq-0">Vous</div>
+  </div>
+</main>
+
+<section class="panneau panneau-encheres" id="panneau-encheres" hidden>
+  <p class="panneau-titre" id="encheres-titre"></p>
+  <div class="paliers" id="encheres-paliers"></div>
+  <div class="couleurs" id="encheres-couleurs" hidden></div>
+  <div class="panneau-actions" id="encheres-actions"></div>
+</section>
+
+<section class="panneau panneau-large" id="panneau-donne" hidden>
+  <p class="panneau-titre" id="donne-titre"></p>
+  <table class="feuille" id="feuille"></table>
+  <div class="panneau-actions">
+    <button type="button" class="bouton principal" id="btn-suivante">Donne suivante</button>
+  </div>
+</section>
+
+<section class="panneau panneau-large" id="panneau-fin" hidden>
+  <p class="panneau-titre" id="fin-titre"></p>
+  <p id="fin-detail"></p>
+  <div class="panneau-actions">
+    <button type="button" class="bouton principal" id="btn-rejouer">Nouvelle partie</button>
+  </div>
+</section>
+
+<aside class="journal" id="journal" aria-live="polite"></aside>
+
+<dialog id="dlg-regles">
+  <h2>Règles appliquées</h2>
+  <ul>
+    <li>Jeu de 32 cartes, quatre joueurs en deux équipes (Sud &amp; Nord contre Ouest &amp; Est). Distribution 3 + 2 + 3, pas de carte retournée.</li>
+    <li><strong>Enchères</strong> : chacun à son tour passe ou annonce un contrat plus élevé — de 80 à 160 par dizaines, puis capot (250) et générale (500) — en nommant son atout. Trois passes après une annonce closent la parole ; quatre passes et on redonne.</li>
+    <li><strong>Coinche</strong> : la défense peut coincher le contrat (points doublés) ; le camp du preneur peut surcoincher (points quadruplés). La coinche clôt les enchères.</li>
+    <li>Ordre à l'atout : V (20) · 9 (14) · A (11) · 10 (10) · R (4) · D (3) · 8 · 7.</li>
+    <li>Ordre à la couleur : A (11) · 10 (10) · R (4) · D (3) · V (2) · 9 · 8 · 7.</li>
+    <li>Obligation de fournir, de couper, de surcouper et de monter à l'atout. Le partenaire maître dispense de couper.</li>
+    <li>Belote &amp; rebelote (R + D d'atout) : 20 points, acquis dans tous les cas. Dix de der : 10 points au dernier pli.</li>
+    <li><strong>Contrat tenu</strong> : le preneur marque la valeur annoncée (× 2 si coinché, × 4 si surcoinché) ; sans coinche, la défense garde ses points de plis.</li>
+    <li><strong>Chute</strong> : la défense marque 162 + la valeur du contrat, multipliée par la coinche ; le preneur ne marque rien.</li>
+    <li>Capot : les huit plis. Générale : les huit plis par le preneur seul.</li>
+    <li>La partie s'arrête à 1000 points.</li>
+  </ul>
+  <button type="button" class="bouton" id="btn-fermer-regles">Fermer</button>
+</dialog>
+
+<script type="module" src="src/ui.js"></script>
+</body>
+</html>
